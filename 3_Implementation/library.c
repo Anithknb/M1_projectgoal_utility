@@ -1,3 +1,13 @@
+/**
+ * @file library.c
+ * @author your anithknb (anithsmirk@gmail.com)
+ * @brief code for library management 
+ * @version 0.1
+ * @date 2022-02-22
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 // This project is an small idea which helps the librarian in fetching data.
 // It also helps in adding data to the books available in the library.
 // This program gives the details about the Books present in the library.
