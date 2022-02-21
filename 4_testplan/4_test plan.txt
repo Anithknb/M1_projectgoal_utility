@@ -1,0 +1,32 @@
+Test Plan
+* For every feature, define a test case
+1.	How to run that feature
+•	We have two main actors in our system:
+•	• Librarian System: Mainly responsible for adding and modifying
+•	books, book items, and users and also contain data of overdue of
+•	books.
+•	• Student: All student can search the catalog, as well as check-out, reserve,
+•	renew, and return a book.
+•	Here are the use cases of the Library Management System:
+•	• Add/Remove/Edit book: To add, remove or modify a book or book item.
+•	• Search catalog: To search books by title, author, subject or publication date.
+2.	Define expected behaviour
+    • Register new account/cancel membership: To add a new member ,or cancel the membership of an existing member.
+•	Check-out book: To borrow a book from the library.
+
+3.	Capture the actual result
+•	Information regarding the book will be entered by the librarian and it can also be viewed or displayed. 
+
+ Table
+*Description of Test case,
+•	All the entities like books, user, search book, add book, return
+a book are normalized and reduce delicacy of records.
+ Input values, Expected Output,
+•	Book name 
+•	Author name 
+•	Number of pages 
+•	Price 
+ Actual Output
+•	Information regarding the book will be entered by the librarian and it can also be viewed or displayed. 
+
+
