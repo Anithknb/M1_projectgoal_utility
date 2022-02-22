@@ -16,6 +16,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+/**
+ * @brief gather infortmations about a book 
+ * @param book name, author, page numbers, price 
+ * @return with test cases
+ * 
+ */
  
  // we use three functions char, int and float. 
  // Book name, author, number of pages, price are the four inputs
@@ -59,7 +65,11 @@ int main()
  
        // using switch function to transfer the inputs to the case 1
         switch (input) {
- 
+ /**
+  * @brief case 1, case2, case3
+  *  @return with the final value 
+  * 
+  */
        
         case 1:
  
