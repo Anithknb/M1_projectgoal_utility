@@ -1,69 +1,73 @@
-########################################################################
-####################### Makefile Template ##############################
-########################################################################
+# Name Of the Project
+PROJECT_NAME = LMS
 
-# Compiler settings - Can be customized.
-CC = gcc
-CXXFLAGS = -std=c11 -Wall
-LDFLAGS = 
+#All Source code file
+SRC = main.c\
+src/Addbook.c\
+src/Deletebook.c\
+src/issuebook.c\
+src/Searchbook.c\
+src/viewbooks.c
 
-# Makefile settings - Can be customized.
-APPNAME = Library Management
-EXT = .c
-SRCDIR = /mnt/e/M1_projectgoal_utility/3_implementation
-OBJDIR = obj
+TEST_SRC = src/Addbook.c\
+src/Deletebook.c\
+src/issuebook.c\
+src/Searchbook.c\
+src/viewbooks.c\
+unity/unity.c\
+test/test_Managment.c
 
-############## Do not change anything from here downwards! #############
-SRC = $(wildcard $(SRCDIR)/*$(EXT))
-OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o)
-DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
-# UNIX-based OS variables & settings
-RM = rm
-DELOBJ = $(OBJ)
-# Windows OS variables & settings
-DEL = del
-EXE = .exe
-WDELOBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)\\%.o)
+#Path to the header file
+INC_HEADER = inc
+INC_TEST = unity
 
-########################################################################
-####################### Targets beginning here #########################
-########################################################################
+#To check if the OS is windows or linux and set the executable file extension and delete command accordingly
+ifdef OS
+   RM = del /q
+   FixPath = $(subst /,\,$1)
+   EXEC = exe
+else
+   ifeq ($(shell uname), Linux)
+      RM = rm -rf
+      FixPath = $1
+	  EXEC = out
+   endif
+endif
 
-all: $(APPNAME)
+TEST_OUTPUT = Test_$(PROJECT_NAME).$(EXEC)
 
-# Builds the app
-$(APPNAME): $(OBJ)
-	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+all:
+	gcc -I $(INC_HEADER) $(SRC) -o $(call FixPath, ./$(PROJECT_NAME).$(EXEC))
 
-# Creates the dependecy rules
-%.d: $(SRCDIR)/%$(EXT)
-	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
+run: all
+	$(call FixPath, ./$(PROJECT_NAME).$(EXEC))
 
-# Includes all .h files
--include $(DEP)
+test:
+	gcc -I $(INC_HEADER) -I $(INC_TEST) $(TEST_SRC) -o $(call FixPath, ./$(TEST_OUTPUT))
+	$(call FixPath, ./$(TEST_OUTPUT))
+	
 
-# Building rule for .o files and its .c/.cpp in combination with all .h
-$(OBJDIR)/%.o: $(SRCDIR)/%$(EXT)
-	$(CC) $(CXXFLAGS) -o $@ -c $<
+coverageCheck:
+	gcc -fprofile-arcs -ftest-coverage -I $(INC_HEADER) -I $(INC_TEST) $(TEST_SRC) -o $(call FixPath, $(TEST_OUTPUT))
+	$(call FixPath, ./$(TEST_OUTPUT))
+	gcov -a $(call FixPath, ./test_Managment.c)
+	$(RM) *.$(EXEC)
+	$(RM) *.gcda
+	$(RM) *.gcno
+	$(RM) *.c.gcov
+	$(RM) *.DAT
+	$(RM) test_Managment.c 
 
-################### Cleaning rules for Unix-based OS ###################
-# Cleans complete project
-.PHONY: clean
+cppcheck:
+	cppcheck --enable=all -I $(INC_HEADER) $(SRC)
+
+valgrind:
+	gcc -I $(INC_HEADER) -I $(INC_TEST) $(TEST_SRC) -o $(call FixPath, ./$(TEST_OUTPUT))
+	valgrind ./$(TEST_OUTPUT)
+
 clean:
-	$(RM) $(DELOBJ) $(DEP) $(APPNAME)
-
-# Cleans only all files with the extension .d
-.PHONY: cleandep
-cleandep:
-	$(RM) $(DEP)
-
-#################### Cleaning rules for Windows OS #####################
-# Cleans complete project
-.PHONY: cleanw
-cleanw:
-	$(DEL) $(WDELOBJ) $(DEP) $(APPNAME)$(EXE)
-
-# Cleans only all files with the extension .d
-.PHONY: cleandepw
-cleandepw:
-	$(DEL) $(DEP)
+	gcc -fprofile-arcs -ftest-coverage -I $(INC_HEADER) -I $(INC_TEST) $(TEST_SRC) -o $(call FixPath, $(TEST_OUTPUT))
+	$(RM) *.$(EXEC)
+	$(RM) *.gcda
+	$(RM) *.gcno
+	$(RM) *.gcov
